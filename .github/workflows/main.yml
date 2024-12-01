@@ -3,7 +3,7 @@ name: Compile JSON to SRS and Upload Release
 on:
   push:
     branches:
-      - main  # 当推送到 main 分支时触发
+      - main  # 当代码推送到 main 分支时触发
   workflow_dispatch:  # 支持手动触发工作流
 
 jobs:
@@ -38,17 +38,17 @@ jobs:
             dir_name=$(basename "$(dirname "$json_file")")
             file_name=$(basename "$json_file" .json)
             output_file="output/${dir_name}@${file_name}.srs"
-            sing-box rule-set compile "$json_file" -o "$output_file"
+            sing-box rule-set compile "$json_file" "$output_file"
           done
 
       # 创建 Release（如果没有现成 Release）
       - name: Create Release
         id: create_release
-        uses: actions/create-release@v1
+        uses: elgohr/Github-Release-Action@v5
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: latest
-          release_name: SRS Files Release
-          draft: false
+          title: SukkaRulesetBin
           prerelease: false
 
       # 上传每个 SRS 文件到 Release
