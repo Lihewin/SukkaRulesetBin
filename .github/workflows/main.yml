@@ -42,15 +42,12 @@ jobs:
             sing-box rule-set compile "$json_file" -o "$output_file"
           done
 
-      # 创建 Release（如果没有现成 Release）
-      - name: Create Release
-        id: create_release
-        uses: elgohr/Github-Release-Action@v5
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          title: latest
-          prerelease: false
+      
+      - name: Set timestamp tag
+        id: set_tag
+        run: |
+          TAG=$(date +'%Y%m%d%H%M%S')  # 格式化为年月日时分秒
+          echo "TAG=${TAG}" >> $GITHUB_ENV
 
       # 上传每个 SRS 文件到 Release
       - name: Upload binaries to release
@@ -58,7 +55,7 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: output/*.srs
-          tag: ${{ github.ref }}
+          tag: ${{ env.TAG }}
           overwrite: true
           body: "SukkaRulesetBin"
           file_glob: true
