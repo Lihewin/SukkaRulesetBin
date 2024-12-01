@@ -8,6 +8,7 @@ on:
 
 jobs:
   compile-and-release:
+    permissions: write-all
     runs-on: ubuntu-latest
 
     steps:
