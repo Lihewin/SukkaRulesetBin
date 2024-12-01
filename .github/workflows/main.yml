@@ -1,10 +1,12 @@
 name: Compile JSON to SRS and Upload Release
 
 on:
+  schedule:
+    - cron: '0 0 * * *'
   push:
     branches:
-      - main  # 当代码推送到 main 分支时触发
-  workflow_dispatch:  # 支持手动触发工作流
+      - main
+  workflow_dispatch:
 
 jobs:
   compile-and-release:
@@ -12,11 +14,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 检出当前代码
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # 安装 sing-box
       - name: Install sing-box
         run: |
           sudo mkdir -p /etc/apt/keyrings
@@ -27,11 +27,9 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y sing-box
 
-      # 克隆目标存储库
       - name: Clone SukkaLab Repository
         run: git clone --depth=1 https://github.com/SukkaLab/ruleset.skk.moe ruleset
 
-      # 编译 JSON 文件为 SRS 文件
       - name: Compile JSON to SRS
         run: |
           mkdir -p output
@@ -42,14 +40,12 @@ jobs:
             sing-box rule-set compile "$json_file" -o "$output_file"
           done
 
-      
       - name: Set timestamp tag
         id: set_tag
         run: |
           TAG=$(date +'%Y%m%d%H%M%S')  # 格式化为年月日时分秒
           echo "TAG=${TAG}" >> $GITHUB_ENV
 
-      # 上传每个 SRS 文件到 时间戳TAG
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
         with:
@@ -59,7 +55,6 @@ jobs:
           overwrite: true
           file_glob: true
 
-                # 上传每个 SRS 文件到 时间戳TAG
       - name: Upload binaries to latest release
         uses: svenstaro/upload-release-action@v2
         with:
