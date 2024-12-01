@@ -49,7 +49,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          title: SukkaRulesetBin
+          title: latest
           prerelease: false
 
       # 上传每个 SRS 文件到 Release
