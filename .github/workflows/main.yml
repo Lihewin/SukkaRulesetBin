@@ -38,7 +38,7 @@ jobs:
             dir_name=$(basename "$(dirname "$json_file")")
             file_name=$(basename "$json_file" .json)
             output_file="output/${dir_name}@${file_name}.srs"
-            sing-box rule-set compile "$json_file" "$output_file"
+            sing-box rule-set compile "$json_file" -o "$output_file"
           done
 
       # 创建 Release（如果没有现成 Release）
