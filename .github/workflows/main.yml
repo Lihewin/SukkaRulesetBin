@@ -61,3 +61,4 @@ jobs:
           tag: ${{ github.ref }}
           overwrite: true
           body: "SukkaRulesetBin"
+          file_glob: true
