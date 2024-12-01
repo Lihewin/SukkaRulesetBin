@@ -53,15 +53,11 @@ jobs:
           prerelease: false
 
       # 上传每个 SRS 文件到 Release
-      - name: Upload SRS Files to Release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          release_id=$(gh release view latest --json id --jq '.id')
-          if [ -z "$release_id" ]; then
-            echo "Release not found. Ensure it was created successfully."
-            exit 1
-          fi
-          for file in output/*.srs; do
-            gh release upload latest "$file" --clobber
-          done
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: output/*.srs
+          tag: ${{ github.ref }}
+          overwrite: true
+          body: "SukkaRulesetBin"
