@@ -49,13 +49,22 @@ jobs:
           TAG=$(date +'%Y%m%d%H%M%S')  # 格式化为年月日时分秒
           echo "TAG=${TAG}" >> $GITHUB_ENV
 
-      # 上传每个 SRS 文件到 latest
+      # 上传每个 SRS 文件到 时间戳TAG
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: output/*.srs
-          tag: "latest"
+          tag: ${{ env.TAG }}
           overwrite: true
-          body: "SukkaRulesetBin"
+          file_glob: true
+
+                # 上传每个 SRS 文件到 时间戳TAG
+      - name: Upload binaries to latest release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: output/*.srs
+          tag: latest
+          overwrite: true
           file_glob: true
