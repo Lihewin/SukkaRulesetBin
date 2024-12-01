@@ -2,7 +2,7 @@ name: Compile JSON to SRS and Upload Release
 
 on:
   schedule:
-    - cron: '0 0 * * *'
+    - cron: '0 8 * * *'
   push:
     branches:
       - main
@@ -43,7 +43,7 @@ jobs:
       - name: Set timestamp tag
         id: set_tag
         run: |
-          TAG=$(date +'%Y%m%d%H%M%S')  # 格式化为年月日时分秒
+          TAG=$(date +'%Y%m%d%H%M%S')
           echo "TAG=${TAG}" >> $GITHUB_ENV
 
       - name: Upload binaries to release
