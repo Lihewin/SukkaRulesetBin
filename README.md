@@ -1,6 +1,6 @@
 # SukkaRulesetBin
 ## About
-使用actions将Sukka维护的rulesets编译为sing-box的二进制rulesets格式。
+使用actions将Sukka维护的rulesets编译为srs格式。
 
 每天北京时间0点整进行一次拉取编译。
 ## Warning
